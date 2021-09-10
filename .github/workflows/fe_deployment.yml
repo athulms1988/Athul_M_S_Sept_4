@@ -17,12 +17,10 @@ jobs:
     - uses: actions/checkout@v1
       with:
         ref: ${{ steps.get_tag_name.outputs.VERSION }}
-    - name: Change to client directory
-      run: cd client
     - name: Install dependencies
-      run: npm install --unsafe-perms
+      run: cd client && npm install --unsafe-perms
     - name: Run build
-      run: CI=false SKIP_PREFLIGHT_CHECK=true npm run build
+      run: cd client && CI=false SKIP_PREFLIGHT_CHECK=true npm run build
     - uses: jakejarvis/s3-sync-action@master
       name: Upload to s3
       with:
