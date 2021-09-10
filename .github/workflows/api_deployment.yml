@@ -1,0 +1,56 @@
+name: api-server-deployment
+
+on:
+  push:
+    tags:
+      - "api-*"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - name: Get tag name
+      id: get_tag_name
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    - uses: actions/checkout@v1
+      with:
+        ref: ${{ steps.get_tag_name.outputs.VERSION }}
+    - name: Generate deployment package
+      run: cd server && zip -r deploy.zip * -x "**node_modules**"
+    - name: Get timestamp
+      uses: gerred/actions/current-time@master
+      id: current-time
+
+    - name: Run string replace
+      uses: frabert/replace-string-action@master
+      id: format-time
+      with:
+        pattern: '[:\.]+'
+        string: "${{ steps.current-time.outputs.time }}"
+        replace-with: '-'
+        flags: 'g'
+
+    - name: Beanstalk Deploy for app
+      uses: einaregilsson/beanstalk-deploy@v11
+      with:
+        aws_access_key: ${{secrets.AWS_ACCESS_KEY}}
+        aws_secret_key: ${{secrets.AWS_SECRET_KEY}}
+        application_name: todo-app
+        environment_name: Todoapp-env
+        region: ap-south-1
+        version_label: "todo-api-${{ steps.format-time.outputs.replaced }}"
+        deployment_package: server/deploy.zip
+
+    - name: Deployed!
+      run: echo App deployed to ELB
+
+    - name: Invalidate Cloudfront
+      uses: chetan/invalidate-cloudfront-action@master
+      env:
+        DISTRIBUTION: EX83EZDHW21CJ
+        PATHS: '/*'
+        AWS_REGION: 'ap-south-1'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
