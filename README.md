@@ -1,31 +1,44 @@
 # To do list app
 
-A single page application (REST architectural style) where the user can signup/login and create todo lists as given in wireframe.
+API Documentation can be found here
+https://documenter.getpostman.com/view/752253/U16kpjp3
 
-## Functional requirements
+Postman collection file - ```Todo.postman_collection.json```
 
-- When ‘NewList’ button is pressed, an empty list will be created at the beginning before other lists.
-- The default title should be ‘List (n+1)’ where n is the current list count. The title should be editable.
-  - Eg: In Wireframe there are 3 list, so the new list title should be ‘List 4’ 
-- User should be able to add items to the list, check/uncheck the items and delete items.
-- Checked items should have a grey color and strikethrough.
-- Delete the list with a conformation popup when red 'X' button at the top right is pressed.
-- Provide warning on signup/login (eg:if user already exists) without page refresh
-- App should be responsive.
-- Order the list by last updated and show the latest 20 notes.
-- Autoload next 20 when scroll reaches at the end of the page.
-- Auto save/update to server and db at logout.
-  - Update only the list which are dirty.
-- Choose suitable DB and frameworks.
+**Tech Stack**
 
-## Nice To Have
+Front-end -> React Application
 
-- able to drag items from one list to another.
-- Auto save/update when no interaction is there from the user for more than 10 seconds or 
-- Service(s) should be containerized and deploy-able to Kubernetes
+Backend ->  ExpressJS (NodeJS)
 
-## Expected artifacts
+Database -> Mongo Cloud
 
-- Architechture diagram and sequence diagram
-- Code along with unit and integration test case
-- RESTAPI documentation
+
+**How to run the application locally**
+
+1. open a terminal and navigate to `server` folder
+1. ```npm install```
+1. ```npm run dev```
+1. After these command the server app will be running on http://localhost:3004
+
+1. Take a new terminal and Navigate to `client` folder
+1. ```npm install```
+1. ```npm start```
+
+    Now the application should be available under http://localhost:3000
+
+**Endpoints**
+
+API Endpoint: https://d211l28ky1hher.cloudfront.net
+
+Frontend: https://d2lkaywvr1s4s6.cloudfront.net
+
+**How To Deploy A New Version After Changes**
+
+CI integration is done using Github Actions. Currently build tags are configured, tagging a commit with `api-<VERSION>` would trigger the CD pipeline for api deployment
+
+Similarly `fe-<VERSION>` for the front end react application deployment. 
+
+ An example tag would be `api-0.0.50`, `fe-0.0.10`
+
+Build status can be found here: https://github.com/athulms1988/Athul_M_S_Sept_4/actions

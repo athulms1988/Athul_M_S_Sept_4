@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "a29e0c55-6838-420c-94de-e86342616f18",
+		"name": "Todo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List",
+			"item": [
+				{
+					"name": "Retrieve the user todo list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/todo",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"todo"
+							]
+						},
+						"description": "This api is to retrieve the todo list of logged in user"
+					},
+					"response": []
+				},
+				{
+					"name": "Create / Update Todo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"title\": \"List 1\",\n        \"task\": [\n            {\n                \"description\": \"Task 1\",\n                \"status\": false\n            },\n            {\n                \"description\": \"Task 2\",\n                \"status\": true\n            }\n        ]\n    },\n    {\n        \"title\": \"List 2\",\n        \"task\": [\n            {\n                \"description\": \"Task 2.1\",\n                \"status\": false\n            }\n        ]\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/todo",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"todo"
+							]
+						},
+						"description": "This API is used to Create / Update Todo list by logged in user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.test(\"Response is ok\", function () {",
+									"    postman.setEnvironmentVariable(\"token\", jsonData.token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"athulms@gmail.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/user/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						},
+						"description": "This api is used for user login"
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Athul M S\",\n    \"email\": \"athulms@gmail.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/user/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						},
+						"description": "This api is used for user registration"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/health",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "This API is to check whether the api server is up and running."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
