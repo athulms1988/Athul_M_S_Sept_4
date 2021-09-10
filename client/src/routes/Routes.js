@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import React from "react";
 import Login from "../components/Login/Login";
 import Register from "../components/Register/Register";
-import List from "../components/List/List";
+import ToDo from "../components/ToDo/ToDo";
 
 
 
@@ -24,7 +24,7 @@ function Routes() {
               {isAuthenticated ? <Redirect to="/list" /> : <Register/>}
             </Route>
             <Route exact path="/list">
-              {isAuthenticated ? <List/> : <Redirect to="/" />}
+              {isAuthenticated ? <ToDo/> : <Redirect to="/" />}
             </Route>
             <Route>
               <Redirect to="/list" />
