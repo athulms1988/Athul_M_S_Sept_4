@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
 import ListCard from "../ListCard/ListCard";
 
-const ListContainer = ({todoListData, onTodoUpdate}) => {
+const ListContainer = ({todoListData, onTodoUpdate, onListRemove}) => {
     const [todoList, setTodoList] = useState(todoListData);
 
     useEffect(() => {
         setTodoList(todoListData);
     }, [todoListData]);
-
-    const onListRemove = (index) => {
-        const existingTodoList = [...todoList];
-        existingTodoList.splice(index, 1) 
-        setTodoList(existingTodoList);
-    }
 
     return (
         <>

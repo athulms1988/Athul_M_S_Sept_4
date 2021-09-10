@@ -22,6 +22,14 @@ const ListCard = ({list, onUpdate, onListRemove, index}) => {
         setTaskList(list.task);
     }, [list, list.task])
 
+    useEffect(() => {
+        onUpdate(index, {
+            title: cardTitle,
+            task: taskList
+        })
+        // eslint-disable-next-line
+    }, [cardTitle, taskList])
+
 
     const changeStatus = (index, status) => {
         const existingTaskList = [...taskList];

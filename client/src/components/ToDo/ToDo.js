@@ -20,19 +20,35 @@ const ToDo = () => {
         })
     }, [])
 
+    useEffect(() => {
+        axios.post('/todo', todoListData)
+        .then().catch();
+    }, [todoListData])
+
     const createNewList = () => {
         setTodoListData([{title: `List ${todoListData.length + 1}`, task: []}, ...todoListData])
     }
 
-    const onTodoUpdate = () => {
-        debugger
+    const onListRemove = (index) => {
+        const existingList = [...todoListData];
+        existingList.splice(index, 1) 
+        setTodoListData(existingList);
     }
+
+
+    const onTodoUpdate = (index, data) => {
+        const existingList = [...todoListData];
+        existingList[index] = data;
+        setTodoListData(existingList);
+    }
+    
+
 
     return (
         <>
             <Header/>
             <button className="btn btn-primary m-2" onClick={createNewList}>New List</button>
-            <ListContainer todoListData={todoListData} onTodoUpdate={onTodoUpdate}/>
+            <ListContainer todoListData={todoListData} onTodoUpdate={onTodoUpdate} onListRemove={onListRemove}/>
         </>
     )
 };
