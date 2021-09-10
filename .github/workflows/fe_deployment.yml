@@ -1,0 +1,43 @@
+name: Front-End-Deployment
+
+on:
+  push:
+    tags:
+      - "fe-*"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - name: Get tag name
+      id: get_tag_name
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    - uses: actions/checkout@v1
+      with:
+        ref: ${{ steps.get_tag_name.outputs.VERSION }}
+    - name: Change to client directory
+      run: cd client
+    - name: Install dependencies
+      run: npm install --unsafe-perms
+    - name: Run build
+      run: CI=false SKIP_PREFLIGHT_CHECK=true npm run build
+    - uses: jakejarvis/s3-sync-action@master
+      name: Upload to s3
+      with:
+        args: --acl public-read --follow-symlinks --delete
+      env:
+        AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        AWS_REGION: 'ap-south-1'
+        SOURCE_DIR: 'client/build'
+    - name: Invalidate Cloudfront
+      uses: chetan/invalidate-cloudfront-action@master
+      env:
+        DISTRIBUTION: E2K1YTNIO1JB2R
+        PATHS: '/*'
+        AWS_REGION: 'ap-south-1'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
