@@ -32,9 +32,8 @@ app.post('/register', [
                        res.status(400).json({ "message": "Error occurred while creating a user, Please try again" }) 
                     } else {
                         req.body.password = hash;
-                        console.log(req.body)
                         let userData = new userModel(req.body);
-                        let savedUser = await userData.save();
+                        await userData.save();
                         res.json({ "message": "Account created successfully, Please login" })
                     }
                 })
