@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ValidationForm, TextInput } from "react-bootstrap4-form-validation";
 import axios from 'axios';
 import { toastr } from "react-redux-toastr";
@@ -7,25 +7,26 @@ const Login = () => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [apiTriggered, setApiTriggered] = useState(false);
-    const history = useHistory();
     const doLogin = () => {
         setApiTriggered(true);
         const request = {
             email: userEmail,
             password: userPassword
         }
-        axios.post('/login', request)
+        axios.post('/user/login', request)
         .then((response)=>{
             setApiTriggered(false);
             if(response && response.data && response.data.token){
-                history.push('/list')
+                localStorage.setItem('user', JSON.stringify(response.data));
+                window.location.href = '/list';
             }
             else{
                 toastr.error("Login", 'Unexpected error occured');
             }
         }).catch((error)=>{
             setApiTriggered(false);
-            toastr.error("Login", error.message);
+            const errorMsg = error.response && error.response.data && error.response.data.message;
+            toastr.error("Login", errorMsg);
         })
     }
     return (

@@ -13,8 +13,13 @@ import ReduxToastr from "react-redux-toastr";
 axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
 
 axios.interceptors.request.use(request => {
-  let token = localStorage.getItem('token');
-  request.headers['Authorization'] =  'Bearer '+ token;
+  let user = localStorage.getItem('user');
+  let token;
+  try {
+    token = JSON.parse(user).token;
+    request.headers['Authorization'] =  'Bearer '+ token;
+  } catch (e) {
+  }
   request.headers['Content-Type'] =  'application/json';
   return request;
 }, error => {
@@ -23,12 +28,12 @@ axios.interceptors.request.use(request => {
 
 axios.interceptors.response.use(response => {
   return response;
- }, error => {
-  if(error.response && error.response.status === 401) {
-    localStorage.removeItem('token');
+ }, (e) => {
+  if(e.response && e.response.status === 401) {
+    localStorage.removeItem('user');
     window.location.href = '/';
   }
-  return Promise.reject(error);
+  return Promise.reject(e);
 });
 
 ReactDOM.render(

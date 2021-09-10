@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import React from "react";
 import Login from "../components/Login/Login";
 import Register from "../components/Register/Register";
@@ -7,13 +7,28 @@ import List from "../components/List/List";
 
 
 function Routes() {
+  let isAuthenticated = false;
+  let user = localStorage.getItem('user');
+  try {
+    isAuthenticated = JSON.parse(user).token ? true : false;
+  } catch (e) {
+  }
   return (
     <div>
       <Router>
         <Switch>
-            <Route exact path="/" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/list" component={List} />
+            <Route exact path="/">
+              {isAuthenticated ? <Redirect to="/list" /> : <Login/>}
+            </Route>
+            <Route exact path="/register">
+              {isAuthenticated ? <Redirect to="/list" /> : <Register/>}
+            </Route>
+            <Route exact path="/list">
+              {isAuthenticated ? <List/> : <Redirect to="/" />}
+            </Route>
+            <Route>
+              <Redirect to="/list" />
+            </Route>
         </Switch>
       </Router>
     </div>
