@@ -6,9 +6,11 @@ import ListContainer from "../ListContainer/ListContainer";
 
 const ToDo = () => {
     const [todoListData, setTodoListData] = useState([]);
+    const [todoUpdated, setTodoUpdated] = useState(false);
     useEffect(() => {
         axios.get('/todo')
         .then((response)=>{
+            setTodoUpdated(true);
             if(response && response.data){
                 setTodoListData(response.data);
             }
@@ -16,13 +18,16 @@ const ToDo = () => {
                 toastr.error("List", 'Unable to retrieve the todo list');
             }
         }).catch((error)=>{
+            setTodoUpdated(true);
             toastr.error("List", 'Unable to retrieve the todo list');
         })
     }, [])
 
     useEffect(() => {
-        axios.post('/todo', todoListData)
-        .then().catch();
+        if(todoUpdated) {
+            axios.post('/todo', todoListData).then().catch();
+        }
+        // eslint-disable-next-line
     }, [todoListData])
 
     const createNewList = () => {
