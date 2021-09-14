@@ -1,6 +1,15 @@
 import React from 'react';
 import ToDo from './ToDo';
+import axios from 'axios';
 import { shallow, mount } from 'enzyme';
+
+jest.mock('axios');
+
+beforeEach(() => {
+  axios.get.mockResolvedValue({then: jest.fn(), catch: jest.fn()});
+  axios.post.mockResolvedValue({then: jest.fn(), catch: jest.fn()});
+});
+
 it('renders correctly', () => {
   const component = shallow(<ToDo/>)
   expect(component).toMatchSnapshot();
