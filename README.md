@@ -24,6 +24,7 @@ Database -> Mongo Cloud
 1. Take a new terminal and Navigate to `client` folder
 1. ```npm install```
 1. ```npm start```
+1. To run test run the command ```npm run test```
 
     Now the application should be available under http://localhost:3000
 
