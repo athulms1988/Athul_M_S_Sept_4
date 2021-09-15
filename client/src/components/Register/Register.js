@@ -43,7 +43,7 @@ const Register = () => {
                 <div className="wrapper fadeInDown">
                     <div className="formContent">
                         <div className="fadeIn first">
-                            <h5>Login</h5>
+                            <h5>Register</h5>
                         </div>
                         <div className="form-group">
                             <TextInput type="text" name="username" className="fadeIn second" autoComplete="off" onChange={(e) => {setUserName(e.target.value)}} value={userName} placeholder="Name" required successMessage="Looks good!"
@@ -54,10 +54,10 @@ const Register = () => {
                                 errorMessage="Password should be minimum 4 characters"/>
                             <TextInput type="password" name="confirmpassword" className="fadeIn third" autoComplete="off" onChange={(e) => {setUserConfirmPassword(e.target.value)}} value={userConfirmPassword} validator={matchPassword} placeholder="Confirm Password" minLength="4" required successMessage="Looks good!"
                                 errorMessage={{validator: "Password does not match"}}/>
-                            <input type="submit" className="fadeIn fourth" value="Login" disabled={apiTriggered}/>
+                            <input type="submit" className="fadeIn fourth" value="Register" disabled={apiTriggered}/>
                         </div>
                         <div id="formFooter">
-                            <Link className="underlineHover" to="/register">Create an Account</Link>
+                            <Link className="underlineHover" to="/">Already have an account?</Link>
                         </div>
                     </div>
                 </div>
