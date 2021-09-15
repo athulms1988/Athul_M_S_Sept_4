@@ -25,9 +25,5 @@ app.use(function (err, req, res, next) {
     res.status(401).json({ message: "Invalid Auth Token, please login again" });
   }
 });
-
-app.listen(port, () =>
-  console.log(`API Server Running On Port -> ${port}!`)
-);
-
+module.exports = app.listen(port, () => console.log(`Listening on port ${port}...`));
 

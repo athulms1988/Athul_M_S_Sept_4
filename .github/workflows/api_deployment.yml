@@ -31,7 +31,10 @@ jobs:
         string: "${{ steps.current-time.outputs.time }}"
         replace-with: '-'
         flags: 'g'
-
+    - name: Install dependencies
+      run: cd server && npm install --unsafe-perms
+    - name: Run Tests
+      run: cd server && npm run test
     - name: Beanstalk Deploy for app
       uses: einaregilsson/beanstalk-deploy@v11
       with:
