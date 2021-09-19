@@ -35,7 +35,7 @@ const Login = () => {
                 <div className="wrapper fadeInDown">
                     <div className="formContent">
                         <div className="fadeIn first">
-                            <h5>Login</h5>
+                            <h5>Login User</h5>
                         </div>
                         <div className="form-group">
                             <TextInput type="email" name="email" className="fadeIn second" autoComplete="off" onChange={(e) => {setUserEmail(e.target.value)}} value={userEmail} placeholder="Email" required successMessage="Looks good!"
